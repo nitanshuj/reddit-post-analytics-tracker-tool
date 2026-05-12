@@ -1,18 +1,26 @@
-# Comment Analytics Tracker Tool
+# Reddit Post Analytics Tracker Tool
 
-A FastAPI backend application that tracks Reddit comment view counts on a schedule and stores them in Supabase. Includes automated data collection via GitHub Actions, Excel/Google Sheets export, and weekly average calculations.
+A powerful FastAPI backend application that tracks and analyzes Reddit subreddit and comment performance metrics on a scheduled basis (4 times daily by default). Automatically collects weekly statistics (posts, impressions, upvotes, engagement rates) for multiple subreddits at regular intervals, monitors individual post engagement trends, tracks comment view counts over time, and provides actionable insights through automated data export to Excel and Google Sheets. Built for Reddit content creators and community managers who need periodic data-driven insights into post and comment performance without manual tracking.
+
+---
+
+## Main Goal
+
+Provide a comprehensive, automated solution for tracking Reddit community performance and post engagement at regular intervals. The system monitors multiple subreddits on a schedule (4 times daily by default) for weekly metrics (total posts, impressions, upvotes, comments, engagement rates), tracks individual post performance with engagement analytics, records comment view count trends with historical comparisons, and automatically exports all collected data for analysis — enabling content creators and community managers to understand what content resonates, identify performance patterns over time, and make data-driven decisions about content strategy.
 
 ---
 
 ## Features
 
-✅ **Track Reddit Comments** — Add comments by URL or ID  
-✅ **Automated Collection** — GitHub Actions triggers data collection on schedule  
-✅ **View Count History** — Store and analyze view counts over time  
-✅ **Weekly Averages** — Automatic calculation of 7-day rolling averages  
-✅ **Export Options** — Download data as Excel or sync to Google Sheets  
-✅ **Cloud Ready** — Deploy to Render, Railway, or similar platforms  
-✅ **Free Tier Compatible** — Works with Supabase free tier
+✅ **Track Multiple Subreddits** — Monitor subreddit performance with weekly aggregated metrics  
+✅ **Post-Level Engagement Analytics** — Track individual posts and calculate engagement rates  
+✅ **Comment Tracking** — Monitor comment view counts and trending over time  
+✅ **Scheduled Data Collection** — GitHub Actions triggers collection 4x daily (6 AM, 12 PM, 6 PM, 12 AM UTC) configurable  
+✅ **Weekly Aggregation** — Automatic calculation of weekly stats (total posts, impressions, engagement)  
+✅ **Engagement Rate Calculation** — Automatic computation: (upvotes + comments) / impressions × 100  
+✅ **Export Options** — Download data as formatted Excel or sync to Google Sheets in real-time  
+✅ **Cloud Ready** — Deploy to Render, Railway, or similar platforms without Docker  
+✅ **Free Tier Compatible** — Works with Supabase and GitHub Actions free tiers
 
 ---
 
@@ -154,13 +162,16 @@ See `.env.example` for all environment variables:
 
 ### GitHub Actions Workflow
 
-Create `.github/workflows/collect-schedule.yml` to schedule data collection:
+Create `.github/workflows/collect-schedule.yml` to schedule data collection (default: 4 times daily):
 
 ```yaml
 name: Collect Reddit Data
 on:
   schedule:
-    - cron: '0 10 * * *'  # Daily at 10 AM UTC
+    - cron: '0 6 * * *'   # 6 AM UTC
+    - cron: '0 12 * * *'  # 12 PM UTC (noon)
+    - cron: '0 18 * * *'  # 6 PM UTC
+    - cron: '0 0 * * *'   # 12 AM UTC (midnight)
 
 jobs:
   collect:

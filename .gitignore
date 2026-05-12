@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project planning and notebooks
+ai-planner/
+research_notebooks/
